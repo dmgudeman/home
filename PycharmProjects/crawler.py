@@ -112,7 +112,7 @@ def get_page(url):
         print('ERROR DECODING url, could be utf-8 issue: \n', url, decode_err )
         return empty_string
 
-    print(decoded_page)
+    #print(decoded_page)
     return decoded_page;
 
 def extract_links(base_url, page):
@@ -138,48 +138,44 @@ def extract_links(base_url, page):
     #    found on that page.
     # 7. Return the set of urls
 
-    o = urllib.parse.urlparse(base_url)
-   # print(o)
-   # abs_url = urllib.parse.urljoin(base_url, "syllabus.html")
-  #  print("ABS_URL = ", abs_url)
+    #o = urllib.parse.urlparse(base_url)
     base_list = []
-
-
-
-    counterr = 0
-    counterb = 0
-    #re_url = r'"https?://.*"'
-    # href_url = r'((https?:)//[^ \<]*[^ \<\.])'
-    #href_url = 'href=".*"'
-    href_url = r'<\s*a.*href\s*=\s*".*"'
+    url_list =[]
+    href_url = r'(<a\s*href\s*=\s*")(\S*)("\S|"\s)'
     m = re.findall(href_url, page)
-    print(type(m))
-    for match in m:
-     #   print(match)
-         # stripped = re.match(r'(https?):', str(match))
+    for thing in m:
+        print(thing[1])
+        print(type(thing[1]))
+
+        w = urllib.parse.urljoin(base_url, thing[1])  # joins with the base url
+
+        u = ok_to_crawl(w)
+        if u:
+            url_list.append(w)
+    url_set = set(url_list)
+    print("REL_URL_SET", url_set)
+
+    return url_set
+"""
         base_list.append(match)
-        counterr += 1
-    #print("BASE_LIST ", base_list)
     rel_url_list =[]
     for url_trunc in base_list:
-       # print(type(url_trunc))
-       # print(url_trunc)
-        x = re.search(r'"\S*"', url_trunc )
-        y = x.group()
-     #   print("+++Y = ", y)
-        z = re.search(r'[^"\s]\S*[^"]', y)
-        v = z.group()
-      #  print('+++Z = ', v)
-        w = urllib.parse.urljoin(base_url, v)
-        #print('BASE_URL = ', base_url)
+        x = re.search(r'"\S*"', url_trunc, re.DOTALL) # collects the string between ""
+        y = x.group()                       # returns a string
+        z = re.search(r'[^"\s]\S*[^"]', y)  # strips the ""
+        v = z.group()                       # returns a string
+        w = urllib.parse.urljoin(base_url, v)  # joins with the base url
         print("+++W = ", w)
-
-        rel_url_list.append(x)
+        u = ok_to_crawl(w)
+        if u:
+            url_list.append(w)
+        print('URL_LIST = ', url_list)
+       # rel_url_list.append(x)
     print("REL_URL_LIST ", rel_url_list)
     print(type(rel_url_list))
 
     next_list = []
-"""
+
     for yes in rel_url_list:
         print(type(yes))
         h = ''.join(yes)
@@ -223,12 +219,14 @@ def main():
     #     crawl_path = crawl(seed_url)
     # 3.print out all the urls in crawl_path to a file called crawled.txt
     #   in the working directory.  Make sure you print one url per line.
-    abs_url = 'http://googledrive.com/host/0BwBC7CTQMPGqfjJaRWMyTTlVRUpjclBPWnktcU5pYnA4ek9WQUxFOXVDWm16RURTVVBBbWM/CS21Ahome.html'
-    if ok_to_crawl(abs_url):
-        get_page(abs_url)
-      #  print(ok_to_crawl(abs_url))
-        page_string = get_page(abs_url)
-        extract_links('http://googledrive.com/host/0BwBC7CTQMPGqfjJaRWMyTTlVRUpjclBPWnktcU5pYnA4ek9WQUxFOXVDWm16RURTVVBBbWM/CS21Ahome.html', page_string)
+    #seed_url = sys.argv[1]
+    seed_url = 'http://googledrive.com/host/0BwBC7CTQMPGqfjJaRWMyTTlVRUpjclBPWnktcU5pYnA4ek9WQUxFOXVDWm16RURTVVBBbWM/CS21Ahome.html'
+    crawl_path = crawl(seed_url)
+    print(type(crawl_path))
+    print(crawl_path, end=',')
+    with open('crawled.txt', 'a', encoding='utf-8') as url_file:
+        for url in crawl_path:
+           url_file.write('\n' + url)
 
 
 
