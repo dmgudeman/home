@@ -131,12 +131,11 @@ def extract_links(base_url, page):
     href_url = r'(<a\s*href\s*=\s*")(\S*)("\S|"\s)'  # url search pattern
     m = re.findall(href_url, page)
     for member in m:
+        joined_url = urllib.parse.urljoin(base_url, member[1])  # joins with the base url
 
-        w = urllib.parse.urljoin(base_url, member[1])  # joins with the base url
-
-        u = ok_to_crawl(w)
-        if u:
-            url_list.append(w)
+        get_ok = ok_to_crawl(joined_url)
+        if get_ok:
+            url_list.append(joined_url)
     url_set = set(url_list)
     print("REL_URL_SET", url_set)
 
