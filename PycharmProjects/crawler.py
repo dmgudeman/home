@@ -175,9 +175,18 @@ def main():
     #     crawl_path = crawl(seed_url)
     # 3.print out all the urls in crawl_path to a file called crawled.txt
     #   in the working directory.  Make sure you print one url per line.
-    seed_url = sys.argv[1]              # collect seed url from command line
-    crawl_path = crawl(seed_url)
-    write_file(crawl_path)
+    print(len(sys.argv))
+    if len(sys.argv) > 2:
+        sys.exit('Error, too many arguments. Only provide seed url')
+    try:
+        seed_url = sys.argv[1]          # collect seed url from command line
+        print("webcrawler working......")
+        crawl_path = crawl(seed_url)
+        write_file(crawl_path)
+
+    except IndexError:
+        print("Usage:", sys.argv[0], 'seed url')
+        sys.exit()
 
 
 if __name__ == '__main__':
