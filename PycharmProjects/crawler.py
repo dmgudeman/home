@@ -112,7 +112,6 @@ def get_page(url):
         print('ERROR DECODING url, could be utf-8 issue: \n', url, decode_err )
         return empty_string
 
-    #print(decoded_page)
     return decoded_page
 
 def extract_links(base_url, page):
@@ -129,15 +128,13 @@ def extract_links(base_url, page):
 
     url_list = []               # initialize list to catch urls
     href_url = r'(<a\s*href\s*=\s*")(\S*)("\S|"\s)'  # url search pattern
-    m = re.findall(href_url, page)
-    for member in m:
-        joined_url = urllib.parse.urljoin(base_url, member[1])  # joins with the base url
-
-        get_ok = ok_to_crawl(joined_url)
+    pat_list = re.findall(href_url, page)
+    for member in pat_list:
+        joined_url = urllib.parse.urljoin(base_url, member[1])  # joins to base
+        get_ok = ok_to_crawl(joined_url)  # check putative crawlee site for ok
         if get_ok:
-            url_list.append(joined_url)
-    url_set = set(url_list)
-    print("REL_URL_SET", url_set)
+            url_list.append(joined_url)  # if ok then add qualified url to list
+    url_set = set(url_list)              # convert list to set
 
     return url_set
 
