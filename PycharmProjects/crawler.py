@@ -126,22 +126,9 @@ def extract_links(base_url, page):
         from the current url and converted to absolute urls.
 
     """
-    # TO DO:
-    # write the code for extract_links.
-    # 1. Initialize an empty set for the urls
-    # 2. use a re pattern to extract the urls from the html file
-    # 3. make sure you extract ALL the URLs on that page
-    # 4. convert each link to an absolute url (hint: urllib.parse.urljoin())
-    # 5. call the function ok_to_crawl to check if you are allowed
-    #    to crawl that absolute url
-    # 6. If that url is ok_to_crawl, add it to the set of urls
-    #    found on that page.
-    # 7. Return the set of urls
 
-    #o = urllib.parse.urlparse(base_url)
-    base_list = []
-    url_list =[]
-    href_url = r'(<a\s*href\s*=\s*")(\S*)("\S|"\s)'
+    url_list = []               # initialize list to catch urls
+    href_url = r'(<a\s*href\s*=\s*")(\S*)("\S|"\s)'  # url search pattern
     m = re.findall(href_url, page)
     for thing in m:
         print(thing[1])
