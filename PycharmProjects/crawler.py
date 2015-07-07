@@ -113,7 +113,7 @@ def get_page(url):
         return empty_string
 
     #print(decoded_page)
-    return decoded_page;
+    return decoded_page
 
 def extract_links(base_url, page):
     """
@@ -130,11 +130,9 @@ def extract_links(base_url, page):
     url_list = []               # initialize list to catch urls
     href_url = r'(<a\s*href\s*=\s*")(\S*)("\S|"\s)'  # url search pattern
     m = re.findall(href_url, page)
-    for thing in m:
-        print(thing[1])
-        print(type(thing[1]))
+    for member in m:
 
-        w = urllib.parse.urljoin(base_url, thing[1])  # joins with the base url
+        w = urllib.parse.urljoin(base_url, member[1])  # joins with the base url
 
         u = ok_to_crawl(w)
         if u:
