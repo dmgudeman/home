@@ -156,61 +156,17 @@ def extract_links(base_url, page):
     print("REL_URL_SET", url_set)
 
     return url_set
-"""
-        base_list.append(match)
-    rel_url_list =[]
-    for url_trunc in base_list:
-        x = re.search(r'"\S*"', url_trunc, re.DOTALL) # collects the string between ""
-        y = x.group()                       # returns a string
-        z = re.search(r'[^"\s]\S*[^"]', y)  # strips the ""
-        v = z.group()                       # returns a string
-        w = urllib.parse.urljoin(base_url, v)  # joins with the base url
-        print("+++W = ", w)
-        u = ok_to_crawl(w)
-        if u:
-            url_list.append(w)
-        print('URL_LIST = ', url_list)
-       # rel_url_list.append(x)
-    print("REL_URL_LIST ", rel_url_list)
-    print(type(rel_url_list))
 
-    next_list = []
 
-    for yes in rel_url_list:
-        print(type(yes))
-        h = ''.join(yes)
-        print(type(h))
-       # m = urllib.parse.urljoin(base_url, m)
-        print(m)
-        print("I got here")
-        print
-       # x = re.findall(r'[^",\s]', rel_url_list)
-        print(yes)
-       # next_list.append(x)
-    print("NEXT_LIST ", next_list)
-    final_list = []
-    for match in rel_url_list:
-       # x = urllib.parse.urljoin(base_url, match)
-        x = str(x)
-       # final_list.append(x)
-        print("FINAL_LIST:", x)
-    print(counterr)
-    """
 
-   # res_list = [x for x,_ in base_list]
-   # final_list = []
-   # for k in res_list:
+def write_file(crawl_path):
+    counter = 0
+    with open('crawled.txt', 'a', encoding='utf-8') as url_file:
+        for url in crawl_path:
+            if counter <= 10:
+                url_file.write(url + '\n')
+                counter += 1
 
-   #     print(final_list)
-
-   #     print(counterr)
-
-    ##for thing in re_list:
-     #  print("thing ", thing)
-     # o = urllib.parse.urlparse(thing)
-     #   o_base = o.scheme + o.hostname
-      #  base_list.append(o_base)
-    #print(re_list)
 
 def main():
     # TO DO:
@@ -219,15 +175,9 @@ def main():
     #     crawl_path = crawl(seed_url)
     # 3.print out all the urls in crawl_path to a file called crawled.txt
     #   in the working directory.  Make sure you print one url per line.
-    #seed_url = sys.argv[1]
-    seed_url = 'http://googledrive.com/host/0BwBC7CTQMPGqfjJaRWMyTTlVRUpjclBPWnktcU5pYnA4ek9WQUxFOXVDWm16RURTVVBBbWM/CS21Ahome.html'
+    seed_url = sys.argv[1]              # collect seed url from command line
     crawl_path = crawl(seed_url)
-    print(type(crawl_path))
-    print(crawl_path, end=',')
-    with open('crawled.txt', 'a', encoding='utf-8') as url_file:
-        for url in crawl_path:
-           url_file.write('\n' + url)
-
+    write_file(crawl_path)
 
 
 if __name__ == '__main__':
