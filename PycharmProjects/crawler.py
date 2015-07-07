@@ -157,9 +157,15 @@ def extract_links(base_url, page):
 
     return url_set
 
-
-
 def write_file(crawl_path):
+    """
+    writes up to ten url to a text file
+
+    if there is no file, it makes a file and writes up to ten urls to file
+    in the working directory
+    :param crawl_path:
+    :return: appends up to ten urls to a text file
+    """
     counter = 0
     with open('crawled.txt', 'a', encoding='utf-8') as url_file:
         for url in crawl_path:
@@ -167,15 +173,7 @@ def write_file(crawl_path):
                 url_file.write(url + '\n')
                 counter += 1
 
-
 def main():
-    # TO DO:
-    # 1.get the seed_url from the command line arguments
-    # 2.Call the crawl function and save its return value:
-    #     crawl_path = crawl(seed_url)
-    # 3.print out all the urls in crawl_path to a file called crawled.txt
-    #   in the working directory.  Make sure you print one url per line.
-    print(len(sys.argv))
     if len(sys.argv) > 2:
         sys.exit('Error, too many arguments. Only provide seed url')
     try:
